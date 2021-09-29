@@ -1,15 +1,14 @@
 package com.techelevator.view;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com.techelevator.view.Menu;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MenuTest {
@@ -22,7 +21,7 @@ public class MenuTest {
 	}
 
 	@Test
-	public void displays_a_list_of_menu_options_and_prompts_user_to_make_a_choice() {
+	public void displays_a_list_of_menu_options_and_prompts_user_to_make_a_choice() throws IOException {
 		Object[] options = new Object[] { Integer.valueOf(3), "Blind", "Mice" };
 		Menu menu = getMenuForTesting();
 
@@ -34,7 +33,7 @@ public class MenuTest {
 	}
 
 	@Test
-	public void returns_object_corresponding_to_user_choice() {
+	public void returns_object_corresponding_to_user_choice() throws IOException {
 		Integer expected = Integer.valueOf(456);
 		Integer[] options = new Integer[] { Integer.valueOf(123), expected, Integer.valueOf(789) };
 		Menu menu = getMenuForTestingWithUserInput("2" + System.lineSeparator());
@@ -45,7 +44,7 @@ public class MenuTest {
 	}
 
 	@Test
-	public void redisplays_menu_if_user_does_not_choose_valid_option() {
+	public void redisplays_menu_if_user_does_not_choose_valid_option() throws IOException {
 		Object[] options = new Object[] { "Larry", "Curly", "Moe" };
 		Menu menu = getMenuForTestingWithUserInput("4" + System.lineSeparator() + "1" + System.lineSeparator());
 
@@ -60,7 +59,7 @@ public class MenuTest {
 	}
 
 	@Test
-	public void redisplays_menu_if_user_chooses_option_less_than_1() {
+	public void redisplays_menu_if_user_chooses_option_less_than_1() throws IOException {
 		Object[] options = new Object[] { "Larry", "Curly", "Moe" };
 		Menu menu = getMenuForTestingWithUserInput("0" + System.lineSeparator() + "1" + System.lineSeparator());
 
@@ -75,7 +74,7 @@ public class MenuTest {
 	}
 
 	@Test
-	public void redisplays_menu_if_user_enters_garbage() {
+	public void redisplays_menu_if_user_enters_garbage() throws IOException {
 		Object[] options = new Object[] { "Larry", "Curly", "Moe" };
 		Menu menu = getMenuForTestingWithUserInput("Mickey Mouse" + System.lineSeparator() + "1" + System.lineSeparator());
 
@@ -89,12 +88,12 @@ public class MenuTest {
 		Assert.assertEquals(expected, output.toString());
 	}
 
-	private Menu getMenuForTestingWithUserInput(String userInput) {
+	private Menu getMenuForTestingWithUserInput(String userInput) throws IOException {
 		ByteArrayInputStream input = new ByteArrayInputStream(String.valueOf(userInput).getBytes());
 		return new Menu(input, output);
 	}
 
-	private Menu getMenuForTesting() {
+	private Menu getMenuForTesting() throws IOException {
 		return getMenuForTestingWithUserInput("1" + System.lineSeparator());
 	}
 }

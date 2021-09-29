@@ -1,34 +1,32 @@
 package com.techelevator.view;
 
 public class CoinBox {
-    public int balance;
+    public Double balance;
 
     public CoinBox() {
-        balance = 0;
+        balance = 0.0;
     }
 
-    public void addMoney(int amountToDeposit) {
+    public void addMoney(Double amountToDeposit) {
         balance = balance + (amountToDeposit * 100);
     }
 
-    public void withdrawMoney(int amountToWithdraw) {
+    public void withdrawMoney(Double amountToWithdraw) {
         balance = balance - (amountToWithdraw);
     }
 
-    public int getBalanceInPennies() {
+    public Double getBalanceInPennies() {
         return balance;
     }
 
     public String getBalanceAsString() {
-        int currentBalanceAsInt = balance;
-        double currentBalanceAsDouble = (currentBalanceAsInt / 100.00);
-        String formattedDoubleAsString = "$" + String.format("%.2f", currentBalanceAsDouble);
+        String formattedDoubleAsString = "$" + String.format("%.2f", balance/100.00);
         return formattedDoubleAsString;
 
     }
 
-    public String returnChangeAsCoins(int balance) {
-        int tracker = balance;
+    public String returnChangeAsCoins(Double balance) {
+        Double tracker = balance;
 
         int totalQuartersToReturn = 0;
         int totalDimesToReturn = 0;
@@ -53,7 +51,7 @@ public class CoinBox {
 
         }
 
-        this.balance = 0;
+        this.balance = 0.0;
 
         String returnString = "Your change is " + totalQuartersToReturn + " quarters, " + totalDimesToReturn
                 + " dimes, " + "and " + totalNickelsToReturn + " nickels.";

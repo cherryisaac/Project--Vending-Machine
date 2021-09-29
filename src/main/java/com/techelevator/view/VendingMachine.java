@@ -1,108 +1,71 @@
 package com.techelevator.view;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 public class VendingMachine {
-    private Inventory vendingMachineInventory;
-    private CoinBox vendingMachineCoinBox;
-    private FileReader vendingMachineFileReader;
-    private Logger vendingMachineLogger;
-    private ShoppingCart vendingMachineShoppingCart;
+    private Inventory inventory;
+    private CoinBox coinBox;
+    private FileReader fileReader;
+    private Logger logger;
 
-    public VendingMachine(Inventory vendingMachineInventory) throws IOException {
-        this.vendingMachineInventory = vendingMachineInventory;
-        vendingMachineFileReader = new FileReader();
-        vendingMachineInventory = new Inventory(vendingMachineFileReader);
-        vendingMachineCoinBox = new CoinBox();
-        vendingMachineLogger = new Logger();
-        vendingMachineShoppingCart = new ShoppingCart();
+    public VendingMachine(Inventory inventory) {
+        this.inventory = inventory;
+        fileReader = new FileReader();
+        coinBox = new CoinBox();
+        logger = new Logger();
     }
 
-    public void feedMoney(int billInserted) throws IOException {
-        vendingMachineCoinBox.addMoney(billInserted);
+    public void feedMoney(Double billInserted) {
+        coinBox.addMoney(billInserted);
         String billInsertedAsString = "$" + billInserted + ".00";
-        vendingMachineLogger.logEvent("FEED MONEY:", billInsertedAsString, getBalanceAsString());
+        logger.logEvent("FEED MONEY:", billInsertedAsString, getBalanceAsString());
     }
 
-    public void subtractMoney(String slotLocation) {
-        int debit = vendingMachineInventory.vendingMachineStock().get(slotLocation).getPriceAsIntInPennies();
-        vendingMachineCoinBox.withdrawMoney(debit);
-
-    }
-
-    public int getBalanceInPennies() {
-        int balance = vendingMachineCoinBox.getBalanceInPennies();
+    public Double getBalanceInPennies() {
+        Double balance = coinBox.getBalanceInPennies();
         return balance;
     }
 
     public String getBalanceAsString() {
-        String returnString = vendingMachineCoinBox.getBalanceAsString();
+        String returnString = coinBox.getBalanceAsString();
         return returnString;
     }
 
-    public String returnChangeInCoins() throws IOException {
-        vendingMachineLogger.logEvent("GIVE CHANGE:", getBalanceAsString(), "$0.00");
-        String returnString = vendingMachineCoinBox.returnChangeAsCoins(getBalanceInPennies());
+    public String returnChangeInCoins()  {
+        logger.logEvent("GIVE CHANGE:", getBalanceAsString(), "$0.00");
+        String returnString = coinBox.returnChangeAsCoins(getBalanceInPennies());
         return returnString;
     }
 
-    public void subtractFromInventory(String slotLocation) {
-        vendingMachineInventory.subtractFromInventory(slotLocation);
-    }
-
-    public List<String> getInventoryString() {
-        TreeMap<String, Item> returnMap = vendingMachineFileReader.createMapOfLocationAndItems();
-
-        List<String> inventory = new ArrayList<>();
-
-        for (Map.Entry<String, Item> entry : returnMap.entrySet()) {
-            String inventoryValueToString = String
-                    .valueOf(vendingMachineInventory.returnCurrentInventory(entry.getKey()));
-
-            if (inventoryValueToString.contentEquals("0")) {
-                inventoryValueToString = "Sold Out";
-            }
-
-            String formattedString = String.format("%-5s %-22s %-5s %-5s", entry.getKey(), entry.getValue().getName(),
-                    entry.getValue().getPriceAsString(), inventoryValueToString);
-            inventory.add(formattedString);
-
-        }
-        return inventory;
-    }
-
-    public List<String> returnSounds() {
-//		return vendingMachineLogger.returnListOfSounds();
-        return vendingMachineShoppingCart.returnListOfSounds();
-    }
-
-    public String purchaseItem(String slotLocation) throws IOException {
+    public String purchaseItem(String slotLocation) {
         try {
-            if (vendingMachineInventory.returnCurrentInventory(slotLocation) == 0) {
-                return "Sold Out";
-            } else if (vendingMachineCoinBox.getBalanceInPennies() < vendingMachineInventory.vendingMachineStock()
-                    .get(slotLocation).getPriceAsIntInPennies()) {
-                return "Please Insert Additional Funds";
+            if (inventory.returnCurrentQty(slotLocation) == 0) {
+                return inventory.stock().get(slotLocation).getName() + " Sold Out \n";
+            } else if (coinBox.getBalanceInPennies() <
+                    inventory.stock().get(slotLocation).getPriceInPennies()) {
+                return "Please Insert Additional Funds \n";
             } else {
                 String balanceBeforePurchase = getBalanceAsString();
-                subtractFromInventory(slotLocation);
-                subtractMoney(slotLocation);
-                String successfulPurchase = "Thank You For Purchasing "
-                        + vendingMachineInventory.vendingMachineStock().get(slotLocation).getName();
-                vendingMachineShoppingCart
-                        .addSoundToList(vendingMachineInventory.vendingMachineStock().get(slotLocation).getSound());
-                vendingMachineLogger.logEvent(
-                        vendingMachineInventory.vendingMachineStock().get(slotLocation).getName() + "  " + slotLocation,
+                // SUBSTRACT Quantity in ItemMap qty=qty-1
+                inventory.stock().get(slotLocation).substractQuantity();
+
+                // SUBTRACT MONEY from CoinBox class
+                // price from item map
+                Double debit = inventory.stock().get(slotLocation).getPriceInPennies();
+                coinBox.withdrawMoney(debit);
+
+                // print message
+                String successfulPurchase = "Dispensing --> "
+                        + inventory.stock().get(slotLocation).getName() + " "
+                        + "$ "+inventory.stock().get(slotLocation).getPriceAsString()+" "
+                        + inventory.stock().get(slotLocation).getSound()+"\n";
+                // print file log.txt
+                logger.logEvent(
+                        inventory.stock().get(slotLocation).getName() + "  " + slotLocation,
                         balanceBeforePurchase, getBalanceAsString());
                 return successfulPurchase;
             }
 
         } catch (NullPointerException e) {
-            return "Please Make A Valid Selection";
+            return "Please Make A Valid Selection \n";
         }
     }
 }

@@ -2,13 +2,21 @@ package com.techelevator.view;
 
 public abstract class Item {
 
-    private String name;
-    private String price;
 
-    public Item(String name, String price) {
+    private String name;
+    private Double price;
+
+    private Integer quantity;
+
+    public Item(String name, Double price, int quantity ) {
         this.name = name;
         this.price = price;
+        this.quantity = quantity;
     }
+
+    public void substractQuantity() { this.quantity--; }
+
+    public Integer getQuantity() { return quantity; }
 
     public abstract String getSound();
 
@@ -16,12 +24,9 @@ public abstract class Item {
         return name;
     }
 
-    public String getPriceAsString() {
-        return price;
-    }
+    public String getPriceAsString() { return Double.toString(price); }
 
-    public int getPriceAsIntInPennies() {
-        price = price.replace("$", "").replace(".", "");
-        return Integer.parseInt(price);
+    public Double getPriceInPennies() {
+        return price * 100.00;
     }
 }

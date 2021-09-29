@@ -9,7 +9,7 @@ public class DrinkTest {
 
     @Before
     public void setup() {
-        drinkTest = new Drink("Mountain Melter", "1.50");
+        drinkTest = new Drink("Mountain Melter", 1.50, 5);
     }
 
     @Test

@@ -10,7 +10,7 @@ public class CandyTest {
 
     @Before
     public void setup() {
-        candyTest = new Candy("Wonka Bar", "1.50");
+        candyTest = new Candy("Wonka Bar", 1.50, 5);
     }
 
     @Test
@@ -25,14 +25,14 @@ public class CandyTest {
 
     @Test
     public void return_price_as_int_pennies_over_one_dollar() {
-        Assert.assertEquals(150, candyTest.getPriceAsIntInPennies());
+        Assert.assertEquals(java.util.Optional.of(150), candyTest.getPriceInPennies());
     }
 
     @Test
     public void return_price_as_int_pennies_under_one_dollar() {
-        candyTest = new Candy("Wonka Bar", "0.85");
+        candyTest = new Candy("Wonka Bar", 0.85, 5);
 
-        Assert.assertEquals(85, candyTest.getPriceAsIntInPennies());
+        Assert.assertEquals(java.util.Optional.of(85), candyTest.getPriceInPennies());
     }
 }
 

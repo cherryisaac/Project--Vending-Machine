@@ -9,7 +9,7 @@ public class ChipTest {
 
     @Before
     public void setup() {
-        chipTest = new Chip("Grain Waves", "2.75");
+        chipTest = new Chip("Grain Waves", 2.75, 5);
     }
 
     @Test
@@ -17,9 +17,6 @@ public class ChipTest {
         Assert.assertEquals("\"Crunch Crunch, Yum!\"", chipTest.getSound());
     }
 
-    @Test
-    public void get_price_in_pennies() {
-        Assert.assertEquals(275, chipTest.getPriceAsIntInPennies());
-    }
+
 
 }
