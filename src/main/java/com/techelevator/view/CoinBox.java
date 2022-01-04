@@ -8,11 +8,11 @@ public class CoinBox {
     }
 
     public void addMoney(Double amountToDeposit) {
-        balance = balance + (amountToDeposit * 100);
+        balance += amountToDeposit * 100;
     }
 
     public void withdrawMoney(Double amountToWithdraw) {
-        balance = balance - (amountToWithdraw);
+        balance -= amountToWithdraw;
     }
 
     public Double getBalanceInPennies() {
@@ -20,8 +20,7 @@ public class CoinBox {
     }
 
     public String getBalanceAsString() {
-        String formattedDoubleAsString = "$" + String.format("%.2f", balance/100.00);
-        return formattedDoubleAsString;
+        return "$" + String.format("%.2f", balance/100.00);
 
     }
 
@@ -48,14 +47,11 @@ public class CoinBox {
                 tracker -= nickel;
 
             }
-
         }
-
         this.balance = 0.0;
 
-        String returnString = "Your change is " + totalQuartersToReturn + " quarters, " + totalDimesToReturn
+        return "Your change is " + totalQuartersToReturn + " quarters, " + totalDimesToReturn
                 + " dimes, " + "and " + totalNickelsToReturn + " nickels.";
-        return returnString;
     }
 
 }

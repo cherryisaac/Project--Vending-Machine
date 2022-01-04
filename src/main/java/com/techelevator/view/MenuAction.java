@@ -9,7 +9,7 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
-public class MenuAction extends Menu {
+public class MenuAction extends Menu {//child of Menu
 
     private FileReader fileReader = new FileReader();
 
@@ -39,7 +39,7 @@ public class MenuAction extends Menu {
     public void feedMoney() {
         System.out.println("Please Insert U.S. Dollar Bills ($1 $2 $5 $10 $20 $50 $100) ");
         try {
-            Double moneyInserted = in.nextDouble();
+            double moneyInserted = in.nextDouble();
             in.nextLine();
             if (moneyInserted == 1 || moneyInserted  == 2 || moneyInserted == 5 || moneyInserted == 10
                     || moneyInserted == 20 || moneyInserted == 50 || moneyInserted == 100) {
@@ -64,7 +64,6 @@ public class MenuAction extends Menu {
 
     public String displayCurrentBalance() {
         return vendingMachine.getBalanceAsString();
-
     }
 
     public void finishTransaction()  {

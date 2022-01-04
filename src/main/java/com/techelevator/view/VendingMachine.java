@@ -20,19 +20,16 @@ public class VendingMachine {
     }
 
     public Double getBalanceInPennies() {
-        Double balance = coinBox.getBalanceInPennies();
-        return balance;
+        return coinBox.getBalanceInPennies();
     }
 
     public String getBalanceAsString() {
-        String returnString = coinBox.getBalanceAsString();
-        return returnString;
+        return coinBox.getBalanceAsString();
     }
 
     public String returnChangeInCoins()  {
         logger.logEvent("GIVE CHANGE:", getBalanceAsString(), "$0.00");
-        String returnString = coinBox.returnChangeAsCoins(getBalanceInPennies());
-        return returnString;
+        return coinBox.returnChangeAsCoins(getBalanceInPennies());
     }
 
     public String purchaseItem(String slotLocation) {
@@ -44,8 +41,8 @@ public class VendingMachine {
                 return "Please Insert Additional Funds \n";
             } else {
                 String balanceBeforePurchase = getBalanceAsString();
-                // SUBSTRACT Quantity in ItemMap qty=qty-1
-                inventory.stock().get(slotLocation).substractQuantity();
+                // SUBTRACT Quantity in ItemMap qty=qty-1
+                inventory.stock().get(slotLocation).subtractQuantity();
 
                 // SUBTRACT MONEY from CoinBox class
                 // price from item map

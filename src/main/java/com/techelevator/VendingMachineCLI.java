@@ -28,36 +28,32 @@ public class VendingMachineCLI {
 	}
 
 	public void run() throws IOException {
-		boolean runAgain= true;
+		boolean runAgain = true;
 		while (runAgain) {
 			System.out.print("*** Vending Machine Vendo-Matic 800 ***");
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 			switch(choice) {
-				case MAIN_MENU_OPTION_DISPLAY_ITEMS:
-					menuAction.displayInventory();
-					break;
-				case MAIN_MENU_OPTION_PURCHASE:
+				case MAIN_MENU_OPTION_DISPLAY_ITEMS -> menuAction.displayInventory();
+				case MAIN_MENU_OPTION_PURCHASE -> {
 					boolean runPurchaseAgain = true;
 					while (runPurchaseAgain) {
 						String choice2 = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 						System.out.println("Current Money Provided: " + menuAction.displayCurrentBalance());
 						switch (choice2) {
-							case PURCHASE_MENU_OPTION_FEED_MONEY:
-								menuAction.feedMoney();
-								break;
-							case PURCHASE_MENU_OPTION_SELECT_PRODUCT:
+							case PURCHASE_MENU_OPTION_FEED_MONEY -> menuAction.feedMoney();
+							case PURCHASE_MENU_OPTION_SELECT_PRODUCT -> {
 								menuAction.displayInventory();
 								menuAction.selectProduct();
-								break;
-							case PURCHASE_MENU_OPTION_FINISH_TRANSACTION:
+							}
+							case PURCHASE_MENU_OPTION_FINISH_TRANSACTION -> {
 								menuAction.finishTransaction();
 								runPurchaseAgain = false;
-								break;
+							}
 						}
 					}
 					break;
-				case MAIN_MENU_OPTION_EXIT:
-					runAgain=false;
+				}
+				case MAIN_MENU_OPTION_EXIT -> runAgain = false;
 			}
 		}
 	}

@@ -1,25 +1,22 @@
 package com.techelevator.view;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
+/* reads through all lines of the file vendingmachine.csv
+*  stores output String into a list called dataLine and return dataLine when used*/
 
 public class FileReader {
-    private String fileName = "vendingmachine.csv";
-    private File inventoryFile = new File(fileName);
-
     public List<String> getListOfAllLines() {
-        List<String> dataLine = new ArrayList<String>();
-        try (Scanner readFile = new Scanner(inventoryFile)) {
-            while (readFile.hasNextLine()) {
-                dataLine.add(readFile.nextLine());
-            }
-        } catch (FileNotFoundException e) {
+        try{
+          return new ArrayList<>(Files.readAllLines(Path.of("vendingmachine.csv")));
+        } catch (IOException e ) {
+            System.err.println(e.getMessage());
         }
-        return dataLine;
-
+        return null;
     }
 
 }

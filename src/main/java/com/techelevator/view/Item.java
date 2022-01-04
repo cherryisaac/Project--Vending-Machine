@@ -14,9 +14,13 @@ public abstract class Item {
         this.quantity = quantity;
     }
 
-    public void substractQuantity() { this.quantity--; }
+    public void subtractQuantity() {
+        this.quantity--;
+    }
 
-    public Integer getQuantity() { return quantity; }
+    public Integer getQuantity() {
+        return quantity;
+    }
 
     public abstract String getSound();
 
@@ -24,7 +28,9 @@ public abstract class Item {
         return name;
     }
 
-    public String getPriceAsString() { return Double.toString(price); }
+    public String getPriceAsString() {
+        return Double.toString(price);
+    }
 
     public Double getPriceInPennies() {
         return price * 100.00;
